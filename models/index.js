@@ -21,6 +21,9 @@ const Page = db.define("page", {
   },
   status: {
     type: Sequelize.ENUM("open", "closed")
+  },
+  tags: {
+    type: Sequelize.ARRAY(Sequelize.TEXT)
   }
 });
 
@@ -29,7 +32,10 @@ Page.beforeValidate(page => {
    * Generate slug
    */
   if (!page.slug) {
-    page.slug = page.title.replace(/\s/g, "_").replace(/\W/g, "").toLowerCase();
+    page.slug = page.title
+      .replace(/\s/g, "_")
+      .replace(/\W/g, "")
+      .toLowerCase();
   }
 });
 
@@ -46,7 +52,7 @@ const User = db.define("user", {
 });
 
 //This adds methods to 'Page', such as '.setAuthor'. It also creates a foreign key attribute on the Page table pointing ot the User table
-Page.belongsTo(User, {as: 'author'});
+Page.belongsTo(User, { as: "author" });
 
 module.exports = {
   db,
